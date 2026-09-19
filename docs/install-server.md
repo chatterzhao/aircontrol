@@ -45,7 +45,7 @@ sudo dnf install tmux      # Fedora/RHEL
 shasum -a 256 -c SHA-256SUMS
 
 # Windows (PowerShell)
-Get-FileHash .\aircontrol-daemon-windows-x64-0.1.0.zip -Algorithm SHA256
+Get-FileHash .\aircontrol-daemon-windows-x64-<版本>.zip -Algorithm SHA256
 # 把结果跟 SHA-256SUMS 里那一行对一下
 ```
 
