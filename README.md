@@ -36,6 +36,26 @@
 
 ---
 
+## 下载（国内建议用 Gitee）
+
+GitHub 的**下载**会跳转到 `release-assets.githubusercontent.com` 和
+`*.blob.core.windows.net`，这两个域名在国内网络上常常连不上——
+**页面能打开、一点下载就没进度**。
+
+所以国内用户请用**镜像仓**：
+
+| | 地址 |
+|---|---|
+| **Gitee（国内，推荐）** | https://gitee.com/zhaoquan/aircontrol/releases |
+| GitHub | https://github.com/chatterzhao/aircontrol/releases |
+
+两个仓库内容完全一样，同一版本同时发布。
+
+> 如果连这里也下不动，可以在**能上网的机器**上下好再传过去；
+> 或者用执行端自带的 `--apk` 参数，让它把安装包直接分发给手机（见安装文档）。
+
+---
+
 ## 安装
 
 ### 1. 执行端 —— [详细步骤](docs/install-server.md)
