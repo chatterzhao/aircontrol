@@ -1,0 +1,5 @@
+# 构建产物不入库，走 Releases 分发
+*.zip
+*.apk
+dist/
+.DS_Store
