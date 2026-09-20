@@ -248,21 +248,33 @@ say "已装好：$PREFIX/bin/daemon"
 
 # ── 6. 配对信息 ───────────────────────────────────────────────────────────────
 
-step "配对信息"
+step "怎么启动"
 
-[ -n "$PIN" ] || PIN="$(python3 -c 'import random; print("".join(random.choices("0123456789", k=6)))')"
-
-LAUNCH="$PREFIX/bin/daemon --ws-port $PORT --pin $PIN --session $TMUX_SESSION"
+# ⚠️ 不再传 --pin：连接码由执行端**随机生成**，每次启动都不一样，
+#    3 分钟有效、连一次就换。让用户自己定一个固定 4 位数是不安全的
+#    （1 万种可能，同一网络下暴力枚举几分钟就进来了）。
+LAUNCH="$PREFIX/bin/daemon --ws-port $PORT --session $TMUX_SESSION"
 
 cat <<EOF
 
-  启动命令（下次直接复制这条）：
+  执行端是**命令行程序**——它跑在一个终端窗口里，连接码就显示在那个窗口里。
+
+  启动命令（下次直接复制这条，粘进终端回车）：
 
       $LAUNCH
 
-  PIN 是你自己定的：$PIN
-  启动后终端里会打印二维码和一条 aircontrol:// 连接串——
-  用手机 App 的「扫码连接」扫一下就连上了。
+  启动后那个终端里会显示：
+
+      [daemon] 连接码 1234（2 分 59 秒内有效，连接一次即失效）
+      [daemon] 手机扫码即连：      ← 下面有个二维码
+      [daemon] 换一个码：直接按回车。
+
+  • 手机扫那个二维码最省事（不用手抄）
+  • 手输的话就填上面那个 4 位数
+  • 码 3 分钟自动换一次，**在那个终端里按回车也能立刻换**
+  • 连上一次之后这台手机就记住了，**之后重连不用再输码**
+
+  ⚠️ 别关那个终端窗口——关了执行端就停了。
 
 EOF
 
@@ -271,7 +283,7 @@ if [ "$START_AFTER" = 1 ]; then
     say "按 Ctrl-C 停止"
     echo
     # exec 让 daemon 直接接管这个进程，Ctrl-C 就是停它，不经过一层 shell
-    exec "$PREFIX/bin/daemon" --ws-port "$PORT" --pin "$PIN" --session "$TMUX_SESSION"
+    exec "$PREFIX/bin/daemon" --ws-port "$PORT" --session "$TMUX_SESSION"
 else
     printf '  现在启动：%s\n\n' "$LAUNCH"
     say "（加 --start 可以让本脚本装完直接启动）"
