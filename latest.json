@@ -1,11 +1,11 @@
 {
-  "client": "0.1.20",
-  "daemon": "0.1.20",
+  "client": "0.1.21",
+  "daemon": "0.1.21",
   "releases": {
     "page": "https://gitee.com/zhaoquan/aircontrol/releases",
     "pageGithub": "https://github.com/chatterzhao/aircontrol/releases",
-    "android": { "minOs": "", "file": "aircontrol-app-android-min7-0.1.20.apk", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.1.20/aircontrol-app-android-min7-0.1.20.apk" },
-    "macos": { "minOs": "", "arch": "", "file": "aircontrol-daemon-macos-min11-arm64-0.1.20.zip", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.1.20/aircontrol-daemon-macos-min11-arm64-0.1.20.zip" },
+    "android": { "minOs": "", "file": "aircontrol-app-android-min7-0.1.21.apk", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.1.21/aircontrol-app-android-min7-0.1.21.apk" },
+    "macos": { "minOs": "", "arch": "", "file": "aircontrol-daemon-macos-min11-arm64-0.1.21.zip", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.1.21/aircontrol-daemon-macos-min11-arm64-0.1.21.zip" },
     "github": "https://github.com/chatterzhao/aircontrol/releases"
   }
 }
