@@ -114,7 +114,58 @@ java_major() {
     java -version 2>&1 | head -1 | sed -nE 's/.*version "([0-9]+).*/\1/p'
 }
 
+# ── 便携 JRE：没有 Java 时，**自己带一个**，不动系统 ──────────────────────────
+#
+# 为什么不在生产机上 `apt install openjdk-17-jre-headless`：
+# 那是**改系统状态**（装包、可能升依赖、要 root）。这个脚本装到用户目录下，
+# 本来就不需要 root；在生产机上装系统包是越界的——**用户没批准你动他的系统**。
+#
+# 做法：下载官方 Temurin JRE 的压缩包，解压到 $PREFIX/jre，
+# 只让这一个程序用它。删掉 $PREFIX 就是完整卸载。
+#
+# 只在 Linux x64/aarch64 上做（macOS 用户基本都能 brew，而且 macOS 的
+# 便携包分发策略各不相同，不如给条明路）。
+ensure_portable_jre() {
+    local jre_dir="$PREFIX/jre"
+    if [ -x "$jre_dir/bin/java" ]; then
+        JAVA_HOME_EFFECTIVE="$jre_dir"
+        return 0
+    fi
+    [ "$OS" = "linux" ] || return 1
+
+    local arch="$ARCH"
+    [ "$arch" = "x64" ] || [ "$arch" = "arm64" ] || return 1
+
+    local url="https://api.adoptium.net/v3/binary/latest/17/ga/linux/${arch}/jre/hotspot/normal/eclipse"
+    say "没有 Java —— 下载便携 JRE 到 $jre_dir（不动系统）"
+    say "  来源：$url"
+    local tmp="$PREFIX/.jre-dl.$$"
+    mkdir -p "$PREFIX"
+    if ! curl -fSL --retry 3 -m 600 -o "$tmp" "$url" 2>/dev/null; then
+        rm -f "$tmp"
+        return 1
+    fi
+    mkdir -p "$jre_dir"
+    # 官方包的顶层是个带版本号的目录，剥掉它
+    if ! tar xzf "$tmp" -C "$jre_dir" --strip-components=1 2>/dev/null; then
+        rm -f "$tmp"; rm -rf "$jre_dir"
+        return 1
+    fi
+    rm -f "$tmp"
+    [ -x "$jre_dir/bin/java" ] || { rm -rf "$jre_dir"; return 1; }
+    JAVA_HOME_EFFECTIVE="$jre_dir"
+    return 0
+}
+
+JAVA_HOME_EFFECTIVE=""
 JAVA_MAJOR="$(java_major || true)"
+if [ -z "$JAVA_MAJOR" ]; then
+    if ensure_portable_jre; then
+        JAVA_MAJOR="$(JAVA_HOME="$JAVA_HOME_EFFECTIVE" "$JAVA_HOME_EFFECTIVE/bin/java" -version 2>&1 \
+            | head -1 | sed -nE 's/.*version "([0-9]+).*/\1/p')"
+        say "便携 JRE ${JAVA_MAJOR} ✓（在 $JAVA_HOME_EFFECTIVE，不影响系统）"
+    fi
+fi
 if [ -z "$JAVA_MAJOR" ]; then
     hint=""
     # Homebrew 的 openjdk 装了也不进 PATH（keg-only），顺手给条明路
@@ -137,8 +188,12 @@ say "Java $JAVA_MAJOR ✓"
 if command -v tmux >/dev/null 2>&1; then
     say "tmux $(tmux -V | awk '{print $2}') ✓（断线后会话能保住）"
 else
-    say "⚠️  没装 tmux：能用，但断线就会丢会话"
-    say "   macOS: brew install tmux    Ubuntu: sudo apt install tmux"
+    say "⚠️  没装 tmux：能连，但**会话管理用不了**（新建/切换/重开都会报 E004）"
+    say "   想让会话保住（断线不丢），装一个："
+    say "     macOS:  brew install tmux"
+    say "     Ubuntu: sudo apt install tmux"
+    say "     CentOS/OpenCloudOS: sudo dnf install tmux"
+    say "   装不了也没关系——单会话照样能用。"
 fi
 
 say "平台 ${SLUG}，装到 $PREFIX"
@@ -253,7 +308,13 @@ step "怎么启动"
 # ⚠️ 不再传 --pin：连接码由执行端**随机生成**，每次启动都不一样，
 #    3 分钟有效、连一次就换。让用户自己定一个固定 4 位数是不安全的
 #    （1 万种可能，同一网络下暴力枚举几分钟就进来了）。
-LAUNCH="$PREFIX/bin/daemon --ws-port $PORT --session $TMUX_SESSION"
+# 用便携 JRE 时，启动命令前面要带上 JAVA_HOME——
+# `bin/daemon` 是 Gradle 生成的脚本，它从 PATH/JAVA_HOME 找 java。
+JAVA_PREFIX=""
+if [ -n "$JAVA_HOME_EFFECTIVE" ]; then
+    JAVA_PREFIX="JAVA_HOME=$JAVA_HOME_EFFECTIVE "
+fi
+LAUNCH="${JAVA_PREFIX}$PREFIX/bin/daemon --ws-port $PORT --session $TMUX_SESSION"
 
 cat <<EOF
 
@@ -283,6 +344,7 @@ if [ "$START_AFTER" = 1 ]; then
     say "按 Ctrl-C 停止"
     echo
     # exec 让 daemon 直接接管这个进程，Ctrl-C 就是停它，不经过一层 shell
+    [ -n "$JAVA_HOME_EFFECTIVE" ] && export JAVA_HOME="$JAVA_HOME_EFFECTIVE"
     exec "$PREFIX/bin/daemon" --ws-port "$PORT" --session "$TMUX_SESSION"
 else
     printf '  现在启动：%s\n\n' "$LAUNCH"
