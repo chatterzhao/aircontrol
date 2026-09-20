@@ -313,6 +313,59 @@ Ctrl 点一下变亮 → 再按 C 就是 Ctrl+C → 然后 Ctrl 自己灭掉。
 
 ---
 
+## [0.1.13] — 2026-09-19
+
+### ⚠️ 修：macOS 包声明"要求 macOS 26"，在旧系统上根本装不了
+
+实测发现执行端的原生库声明 `minos 26.0`——因为编译时**没指定最低系统版本**，
+clang 就把当前 SDK 的版本写了进去。结果：**在 macOS 15 / 14 / 13 上都加载不了**，
+而文件名里完全看不出来。
+
+已修（显式 `-mmacosx-version-min=11.0`，现在声明 `minos 11.0`）。
+
+### 产物命名写清「谁能装」
+
+以前叫：
+
+```
+aircontrol-daemon-macos-arm64-0.1.12.zip
+aircontrol-app-0.1.12.apk
+```
+
+**回答不了"最低哪个系统版本"**——用户下完在旧系统上跑不起来，只会以为包坏了。
+现在从**产物自己身上读**最低版本，写进文件名：
+
+```
+aircontrol-daemon-macos11+-arm64-0.1.13.zip     ← macOS 11 及以上
+aircontrol-app-android7+-0.1.13.apk             ← Android 7 及以上
+```
+
+读不出最低版本就**中止发布**——写不出这个的名字等于没写。
+
+### 更新时**直接下载文件**，不是跳页面
+
+以前 `latest.json` 只有一个版本号，所以"下载新版本"只能打开 release 页面，
+让用户自己在里面挑包。现在 `latest.json` 里带**每个平台的直链**：
+
+```json
+{
+  "client": "0.1.13",
+  "releases": {
+    "page":    "https://gitee.com/zhaoquan/aircontrol/releases",
+    "android": { "minOs": "7", "url": "…/aircontrol-app-android7+-0.1.13.apk" },
+    "macos":   { "minOs": "11", "arch": "arm64", "url": "…/aircontrol-daemon-macos11+-arm64-0.1.13.zip" }
+  }
+}
+```
+
+App 按**自己是什么平台**取对应的那条（现在只有 Android 一种形态，
+将来出 iOS / 鸿蒙时按编译目标取，而不是"取第一个"——那会在那一刻静默下错包）。
+
+「关于」里给的是**release 页面**（给人看的），更新下载用的是**直链**（给机器下的）——
+两者不是一回事。
+
+---
+
 ## [未发布]
 
 ### 计划中
