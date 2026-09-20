@@ -1628,6 +1628,49 @@ h        = 显示帮助
 
 ---
 
+## [0.1.44] — 2026-09-20
+
+### 🎯 没装 tmux 就连不上（真机实测抓到的，根因）
+
+**症状**：手机连 Linux 服务器时**一直停在「重连中」**，而执行端日志显示
+**设备已授权** —— 什么错都没有，就是连不上。
+
+**根因**（两层叠在一起）：
+
+```kotlin
+private fun run(vararg cmd: String): ProcessResult {
+    val proc = ProcessBuilder(*cmd).start()      // ← tmux 不存在时抛 IOException
+    ...
+    val exitCode = try { proc.waitFor() } catch (e: IOException) { -1 }   // ← 死代码
+}
+```
+
+① **`ProcessBuilder.start()` 在可执行文件不存在时抛 `IOException`** ——
+   而那个 try/catch 包在了 `waitFor()` 上，**它抛的是 `InterruptedException`**
+   ✗ 所以那个 catch 从来没生效过，真正的异常直接飞了出去。
+
+② `ensureSession()` 在建不出会话时**抛 `IllegalStateException`**，
+   而它在**认证协程里**被直接调用 → 协程中断 → **整条 WebSocket 关闭** →
+   手机无限重连 = 「重连中」 ✗
+
+**改法**：
+
+- `run()` 兜住 `start()` 的异常，统一变成「退出码 -1 + 原因」，
+  让上层本来就有的 `exitCode != 0` 分支去处理
+- **认证之后的设置阶段全部隔离**：会话/接入层/各种清单推送失败**只降级**，
+  不再带走连接 —— 这些是**增强功能**，不是连接的前提
+
+**真机验证**：腾讯云 Linux（无 tmux、无桌面）现在显示 **「已连接 · pty」** ✓
+
+### 顺带说明一个仍然存在的限制
+
+**没有 tmux 时终端是空白的** —— 因为会话建不出来，没有东西可显示。
+这本身是合理的（没 tmux 就是没有会话管理），
+但**手机端还没说清原因**，只给了块空白 —— 跟"无桌面"是同一类问题，
+下一步补。
+
+---
+
 ## [未发布]
 
 ### 计划中
