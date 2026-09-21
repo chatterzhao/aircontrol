@@ -123,27 +123,75 @@ java_major() {
 # 做法：下载官方 Temurin JRE 的压缩包，解压到 $PREFIX/jre，
 # 只让这一个程序用它。删掉 $PREFIX 就是完整卸载。
 #
-# 只在 Linux x64/aarch64 上做（macOS 用户基本都能 brew，而且 macOS 的
-# 便携包分发策略各不相同，不如给条明路）。
+# **Linux 和 macOS 都做。**
+#
+# 原来只做 Linux，macOS 让人自己 `brew install openjdk@17`。
+# 但实测发现这条太容易卡住：macOS 上 `/usr/bin/java` 是个 stub（见上），
+# 而 Homebrew 的 openjdk 是 keg-only、装了也不进 PATH——
+# 用户会得到"我明明装了 Java 却还用不了"。
+# Adoptium 两个平台都有官方包，没理由让 macOS 用户自己折腾。
 ensure_portable_jre() {
     local jre_dir="$PREFIX/jre"
     if [ -x "$jre_dir/bin/java" ]; then
         JAVA_HOME_EFFECTIVE="$jre_dir"
         return 0
     fi
-    [ "$OS" = "linux" ] || return 1
 
-    local arch="$ARCH"
-    [ "$arch" = "x64" ] || [ "$arch" = "arm64" ] || return 1
+    # Adoptium 的 os 段：linux / mac
+    local os_seg
+    case "$OS" in
+        linux) os_seg="linux" ;;
+        macos) os_seg="mac" ;;
+        *) return 1 ;;
+    esac
 
-    local url="https://api.adoptium.net/v3/binary/latest/17/ga/linux/${arch}/jre/hotspot/normal/eclipse"
-    say "没有 Java —— 下载便携 JRE 到 $jre_dir（不动系统）"
-    say "  来源：$url"
+    # ⚠️ Adoptium 把 arm64 叫 **aarch64**。直接传 arm64 会 404——
+    # 这是实测确认的（查它的 assets API 返回的就是 aarch64）。
+    local arch
+    case "$ARCH" in
+        arm64) arch="aarch64" ;;
+        x64)   arch="x64" ;;
+        *) return 1 ;;
+    esac
+
     local tmp="$PREFIX/.jre-dl.$$"
     mkdir -p "$PREFIX"
-    if ! curl -fSL --retry 3 -m 600 -o "$tmp" "$url" 2>/dev/null; then
-        rm -f "$tmp"
-        return 1
+
+    # ⚠️ **先试国内镜像，最后才退官方。**
+    #
+    # 实测（同一台国内机器，同样 6 秒）：
+    #   清华 TUNA      12 MB   ≈ 2.1 MB/s   → 44MB 约 22 秒
+    #   Adoptium 官方  ~0      ≈ 54 KB/s    → 44MB 约 14 分钟
+    # **差 40 倍。** 这和"GitHub Release 下载国内连得上、下不动"是同一类问题——
+    # 脚本别处都在防，唯独 JRE 这段原来没防。
+    #
+    # 镜像要列目录拿文件名（它不是 latest 这种重定向接口），
+    # 所以比官方多一次请求，但换来 40 倍速度，值。
+    say "没有 Java —— 下载便携 JRE 到 $jre_dir（不动系统）"
+
+    local mirror got=0
+    for mirror in \
+        "https://mirrors.tuna.tsinghua.edu.cn/Adoptium/17/jre/${arch}/${os_seg}" \
+        "https://mirror.nju.edu.cn/adoptium/17/jre/${arch}/${os_seg}" ; do
+        # 目录名两端不一致：Adoptium 用 mac，镜像也是 mac；保持一致
+        local fname
+        fname="$(curl -fsSL --connect-timeout 8 -m 25 "$mirror/" 2>/dev/null \
+            | grep -oE 'OpenJDK17U-jre_[^"]+\.tar\.gz' | sort -V | tail -1)"
+        [ -n "$fname" ] || continue
+        say "  试镜像：$mirror/$fname"
+        if curl -fSL --retry 2 --connect-timeout 10 -m 300 -o "$tmp" "$mirror/$fname" 2>/dev/null; then
+            got=1; break
+        fi
+    done
+
+    if [ "$got" != "1" ]; then
+        local url="https://api.adoptium.net/v3/binary/latest/17/ga/${os_seg}/${arch}/jre/hotspot/normal/eclipse"
+        say "  镜像都不通，退官方：$url"
+        say "  ⚠️ 国内从官方下可能要十几分钟，耐心等（或者挂代理）"
+        if ! curl -fSL --retry 3 -m 900 -o "$tmp" "$url" 2>/dev/null; then
+            rm -f "$tmp"
+            return 1
+        fi
     fi
     mkdir -p "$jre_dir"
     # 官方包的顶层是个带版本号的目录，剥掉它
