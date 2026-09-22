@@ -10,23 +10,27 @@
 | 要求 | 说明 |
 |---|---|
 | **Java 17 或更高** | 终端里跑 `java -version` 能出版本号就行 |
-| **tmux**（可选，强烈建议） | 有它才能在断线后保住会话。没有的话：终端照样能用，但**断线就是重开一个新 shell** |
+| **tmux**（可选，强烈建议） | 有它才能在断线后保住会话。**没有的话执行端会当场问你要不要帮你装**（答 y 就行） |
 
 ```bash
 # 检查
 java -version      # 要 17+
 tmux -V            # 可选
 
-# 装 tmux（如果没有）
+# 想自己装（执行端也会问，答 y 它替你装）
 brew install tmux          # macOS
 sudo apt install tmux      # Debian/Ubuntu
 sudo dnf install tmux      # Fedora/RHEL
 ```
 
-> **Windows 上没有 tmux**（tmux 本身就不是 Windows 的程序）。执行端会自动
-> 降级：直接开一个登录 PowerShell，**功能照常，只是断线后不保留现场**。
-> 另外，手机上看"实时画面"那个功能依赖 tmux 的屏幕缓冲，**在 Windows 上不可用** ——
-> 看终端请用终端模式（那条走的是原始字节投屏，不依赖 tmux）。
+> **装 tmux 这件事不用你操心**：执行端启动时如果发现没有 tmux，会检测出你机器上的
+> 包管理器并问一句"要我现在帮你装吗"。答 `y` 它就跑（macOS 走 Homebrew，
+> 不需要管理员密码；Linux 上要 `sudo`，会问密码）。答 `n` 或者干脆没人应答
+> （比如后台/开机自启跑的），它就把命令打出来让你自己决定，**绝不自作主张**。
+>
+> 没有 tmux 也能用：终端照常开，只是**断线后不保留现场**，而且**新建/切换/重开
+> 会话用不了**。另外手机上看"实时画面"那个功能依赖 tmux 的屏幕缓冲，
+> **在 Windows 上不可用** —— 看终端请用终端模式（那条走原始字节投屏，不依赖 tmux）。
 
 ---
 
@@ -75,6 +79,17 @@ Expand-Archive aircontrol-daemon-windows-x64-<版本>.zip -DestinationPath airco
 cd aircontrol\daemon        # ⚠️ 包里有层 daemon\ 目录
 .\bin\daemon.bat --ws-port 8080 --pin 1234 --session aircontrol
 ```
+
+> **Windows 上要放行防火墙**，否则手机连不进来（而且现象是"连不上"，不会提示原因）。
+> 用管理员 PowerShell 跑一次即可（只需一次）：
+>
+> ```powershell
+> netsh advfirewall firewall add rule name="AirControl 8080" dir=in action=allow protocol=TCP localport=8080
+> ```
+>
+> 不想用了就删掉：把 `add` 换成 `delete`，其余参数一样。
+>
+> 另外 Windows 上没有 tmux，执行端会自动降级（终端照常开，只是断线不保现场）。
 
 > - `--pin` 换成你自己的，**别用示例里的 1234**
 > - `--ws-port` 默认 8080，被占用就换一个

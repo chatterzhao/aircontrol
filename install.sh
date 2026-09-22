@@ -24,6 +24,29 @@
 #
 set -euo pipefail
 
+# ── 脚本自检：中文紧邻变量的坑 ──────────────────────────────────────────────
+#
+# `$VAR` 后面紧跟全角字符时，shell 把多字节字符的字节当成变量名的一部分，
+# 报 `VAR（: unbound variable` 然后带着 `set -u` 直接死掉。
+#
+# ⚠️ **这个自检是补上的，因为本脚本已经犯过两次**（`$jre_dir（`、`$JAVA_HOME_EFFECTIVE，`）：
+#    两处都在"没有 Java → 下载便携 JRE"那条路上，而那条路在 Linux 的 bash 5 上
+#    恰好不触发（只有 macOS 自带的 bash 3.2 会），所以 e2e 一直没暴露。
+#    现象也不是"少打印一段"，而是**整个安装中断**。
+#
+# release.sh 和 publish-public.sh 早就装了同样的自检 —— 现在三个脚本一致。
+self_check() {
+    local bad
+    # 先剔掉注释行：注释里写 `$VAR（` 是在**说明这个坑**，不是代码。
+    bad="$(sed 's/#.*$//' "$0" | perl -ne 'print "$.: $_" if /\$[A-Za-z_][A-Za-z0-9_]*(?=[^\x00-\x7F])/' 2>/dev/null | head -3 || true)"
+    if [ -n "$bad" ]; then
+        echo "❌ 本脚本有裸变量紧跟中文（必须写 \${VAR}）：" >&2
+        printf '%s\n' "$bad" >&2
+        exit 2
+    fi
+}
+self_check
+
 VERSION="${AIRCONTROL_VERSION:-}"       # 留空＝装最新
 PREFIX="${AIRCONTROL_PREFIX:-$HOME/.aircontrol}"
 PORT="${AIRCONTROL_PORT:-8080}"
@@ -167,7 +190,7 @@ ensure_portable_jre() {
     #
     # 镜像要列目录拿文件名（它不是 latest 这种重定向接口），
     # 所以比官方多一次请求，但换来 40 倍速度，值。
-    say "没有 Java —— 下载便携 JRE 到 $jre_dir（不动系统）"
+    say "没有 Java —— 下载便携 JRE 到 ${jre_dir}（不动系统）"
 
     local mirror got=0
     for mirror in \
@@ -211,7 +234,7 @@ if [ -z "$JAVA_MAJOR" ]; then
     if ensure_portable_jre; then
         JAVA_MAJOR="$(JAVA_HOME="$JAVA_HOME_EFFECTIVE" "$JAVA_HOME_EFFECTIVE/bin/java" -version 2>&1 \
             | head -1 | sed -nE 's/.*version "([0-9]+).*/\1/p')"
-        say "便携 JRE ${JAVA_MAJOR} ✓（在 $JAVA_HOME_EFFECTIVE，不影响系统）"
+        say "便携 JRE ${JAVA_MAJOR} ✓（在 ${JAVA_HOME_EFFECTIVE}，不影响系统）"
     fi
 fi
 if [ -z "$JAVA_MAJOR" ]; then
@@ -347,7 +370,51 @@ else
     die "压缩包结构不对，期望里面是 daemon/bin + daemon/lib"
 fi
 chmod +x "$PREFIX/bin/daemon"
-say "已装好：$PREFIX/bin/daemon"
+say "已装好：${PREFIX}/bin/daemon"
+
+# ── 5.5 环境依赖：能装的顺手装上 ────────────────────────────────────────────
+#
+# 位置很讲究：放在「装好执行端」之后、「告诉用户怎么启动」之前 ——
+# 让用户看到"安装完成"的时候，东西已经**是配好的**了。
+#
+# 为什么这一步值得自动做：真实用户（老师、文员）不会自己去敲 `brew install tmux`。
+# 我们提示语写得再清楚，这一步也基本不会发生 —— 而没有 tmux，会话管理就是残的
+#（新建/切换/重开会话全报 E004）。
+#
+# 走的是 `daemon deps install`，**和 `daemon setup` 里那个入口是同一份实现**：
+#   · 下的是**官方构建**（tmux/tmux-builds，tmux 组织自己发的）
+#   · 解压到 ~/.aircontrol/bin/，**不用 sudo、不用包管理器、全程不问任何问题**
+#   · 装完顺手把推荐的 tmux 配置安排好（鼠标滚动、历史行数、ESC 延迟）
+#
+# ⚠️ 失败**绝不影响安装**：没有 tmux 只是少几个能力，照常能用（终端会降级成
+#    裸登录 shell）。所以这里全部 `|| true`，绝不让它把整个安装带崩。
+step "环境依赖"
+DEPS_JAVA_HOME="${JAVA_HOME_EFFECTIVE:-}"
+
+# ⚠️ **必须加超时保护。**
+#
+# 实测踩到：如果装的是**还不认识 `deps` 子命令的旧版本**（比如 `--version` 钉到
+# 一个老版本），它会把 `deps` 当成普通参数、**直接把服务端跑起来** ——
+# 于是这里**永远不返回**，整个安装卡死在一个"正在启动的服务端"上。
+# 这不是假想：新 install.sh + 老包就是这种情况。
+#
+# Linux 一定有 `timeout`；macOS 自带没有，那就直接跑（那边装的必然是新包）。
+run_deps() {
+    if command -v timeout >/dev/null 2>&1; then
+        timeout 600 "$@"
+    else
+        "$@"
+    fi
+}
+
+say "顺手把能装的环境依赖装上（tmux）——失败不影响使用"
+if [ -n "$DEPS_JAVA_HOME" ]; then
+    JAVA_HOME="$DEPS_JAVA_HOME" run_deps "$PREFIX/bin/daemon" deps install || \
+        say "（这步没走完，不影响使用。想再试：${PREFIX}/bin/daemon deps install）"
+else
+    run_deps "$PREFIX/bin/daemon" deps install || \
+        say "（这步没走完，不影响使用。想再试：${PREFIX}/bin/daemon deps install）"
+fi
 
 # ── 6. 配对信息 ───────────────────────────────────────────────────────────────
 
