@@ -1,14 +1,14 @@
 {
-  "client": "0.1.57",
-  "daemon": "0.1.57",
-  "notes": "Codex 现在真的能用了；修掉两个\"明明做了、却用不了\"",
+  "client": "0.1.58",
+  "daemon": "0.1.58",
+  "notes": "手机上能看那台机器的文件了；说明",
   "releases": {
     "page": "https://gitee.com/zhaoquan/aircontrol/releases",
     "pageGithub": "https://github.com/chatterzhao/aircontrol/releases",
-    "android": { "minOs": "7", "file": "aircontrol-app-android-min7-0.1.57.apk", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.1.57/aircontrol-app-android-min7-0.1.57.apk" },
-    "macos": { "minOs": "11", "arch": "arm64", "file": "aircontrol-daemon-macos-min11-arm64-0.1.57.zip", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.1.57/aircontrol-daemon-macos-min11-arm64-0.1.57.zip" },
-    "macosIntel": { "minOs": "11", "arch": "x64", "file": "aircontrol-daemon-macos-min11-x64-0.1.57.zip", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.1.57/aircontrol-daemon-macos-min11-x64-0.1.57.zip" },
-    "linux": { "arch": "x64", "file": "aircontrol-daemon-linux-x64-0.1.57.zip", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.1.57/aircontrol-daemon-linux-x64-0.1.57.zip" },
+    "android": { "minOs": "7", "file": "aircontrol-app-android-min7-0.1.58.apk", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.1.58/aircontrol-app-android-min7-0.1.58.apk" },
+    "macos": { "minOs": "11", "arch": "arm64", "file": "aircontrol-daemon-macos-min11-arm64-0.1.58.zip", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.1.58/aircontrol-daemon-macos-min11-arm64-0.1.58.zip" },
+    "macosIntel": { "minOs": "11", "arch": "x64", "file": "aircontrol-daemon-macos-min11-x64-0.1.58.zip", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.1.58/aircontrol-daemon-macos-min11-x64-0.1.58.zip" },
+    "linux": { "arch": "x64", "file": "aircontrol-daemon-linux-x64-0.1.58.zip", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.1.58/aircontrol-daemon-linux-x64-0.1.58.zip" },
     "github": "https://github.com/chatterzhao/aircontrol/releases"
   }
 }
