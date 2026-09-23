@@ -1,13 +1,14 @@
 {
-  "client": "0.1.54",
-  "daemon": "0.1.54",
+  "client": "0.1.55",
+  "daemon": "0.1.55",
+  "notes": "屏幕视图：现在点得动、也打得出字；修了两个「看起来成功了、其实没生效」的问题",
   "releases": {
     "page": "https://gitee.com/zhaoquan/aircontrol/releases",
     "pageGithub": "https://github.com/chatterzhao/aircontrol/releases",
-    "android": { "minOs": "7", "file": "aircontrol-app-android-min7-0.1.54.apk", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.1.54/aircontrol-app-android-min7-0.1.54.apk" },
-    "macos": { "minOs": "11", "arch": "arm64", "file": "aircontrol-daemon-macos-min11-arm64-0.1.54.zip", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.1.54/aircontrol-daemon-macos-min11-arm64-0.1.54.zip" },
-    "macosIntel": { "minOs": "11", "arch": "x64", "file": "aircontrol-daemon-macos-min11-x64-0.1.54.zip", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.1.54/aircontrol-daemon-macos-min11-x64-0.1.54.zip" },
-    "linux": { "arch": "x64", "file": "aircontrol-daemon-linux-x64-0.1.54.zip", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.1.54/aircontrol-daemon-linux-x64-0.1.54.zip" },
+    "android": { "minOs": "7", "file": "aircontrol-app-android-min7-0.1.55.apk", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.1.55/aircontrol-app-android-min7-0.1.55.apk" },
+    "macos": { "minOs": "11", "arch": "arm64", "file": "aircontrol-daemon-macos-min11-arm64-0.1.55.zip", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.1.55/aircontrol-daemon-macos-min11-arm64-0.1.55.zip" },
+    "macosIntel": { "minOs": "11", "arch": "x64", "file": "aircontrol-daemon-macos-min11-x64-0.1.55.zip", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.1.55/aircontrol-daemon-macos-min11-x64-0.1.55.zip" },
+    "linux": { "arch": "x64", "file": "aircontrol-daemon-linux-x64-0.1.55.zip", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.1.55/aircontrol-daemon-linux-x64-0.1.55.zip" },
     "github": "https://github.com/chatterzhao/aircontrol/releases"
   }
 }
