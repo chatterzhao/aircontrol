@@ -1,14 +1,14 @@
 {
-  "client": "0.1.61",
-  "daemon": "0.1.61",
-  "notes": "省流量真的省了一半（这次是量出来的）；你能看见流量花在哪了；说明",
+  "client": "0.1.62",
+  "daemon": "0.1.62",
+  "notes": "网慢的时候，画面不再\"越拖越旧\"；执行端会告诉你\"为什么卡\"；说明",
   "releases": {
     "page": "https://gitee.com/zhaoquan/aircontrol/releases",
     "pageGithub": "https://github.com/chatterzhao/aircontrol/releases",
-    "android": { "minOs": "7", "file": "aircontrol-app-android-min7-0.1.61.apk", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.1.61/aircontrol-app-android-min7-0.1.61.apk" },
-    "macos": { "minOs": "11", "arch": "arm64", "file": "aircontrol-daemon-macos-min11-arm64-0.1.61.zip", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.1.61/aircontrol-daemon-macos-min11-arm64-0.1.61.zip" },
-    "macosIntel": { "minOs": "11", "arch": "x64", "file": "aircontrol-daemon-macos-min11-x64-0.1.61.zip", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.1.61/aircontrol-daemon-macos-min11-x64-0.1.61.zip" },
-    "linux": { "arch": "x64", "file": "aircontrol-daemon-linux-x64-0.1.61.zip", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.1.61/aircontrol-daemon-linux-x64-0.1.61.zip" },
+    "android": { "minOs": "7", "file": "aircontrol-app-android-min7-0.1.62.apk", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.1.62/aircontrol-app-android-min7-0.1.62.apk" },
+    "macos": { "minOs": "11", "arch": "arm64", "file": "aircontrol-daemon-macos-min11-arm64-0.1.62.zip", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.1.62/aircontrol-daemon-macos-min11-arm64-0.1.62.zip" },
+    "macosIntel": { "minOs": "11", "arch": "x64", "file": "aircontrol-daemon-macos-min11-x64-0.1.62.zip", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.1.62/aircontrol-daemon-macos-min11-x64-0.1.62.zip" },
+    "linux": { "arch": "x64", "file": "aircontrol-daemon-linux-x64-0.1.62.zip", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.1.62/aircontrol-daemon-linux-x64-0.1.62.zip" },
     "github": "https://github.com/chatterzhao/aircontrol/releases"
   }
 }
