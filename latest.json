@@ -1,13 +1,13 @@
 {
-  "client": "0.1.71",
-  "daemon": "0.1.71",
-  "notes": "新功能；注意",
+  "client": "0.1.72",
+  "daemon": "0.1.72",
+  "notes": "新功能；修复",
   "releases": {
     "page": "https://gitee.com/zhaoquan/aircontrol/releases",
     "pageGithub": "https://github.com/chatterzhao/aircontrol/releases",
-    "android": { "minOs": "7", "file": "aircontrol-app-android-min7-0.1.71.apk", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.1.71/aircontrol-app-android-min7-0.1.71.apk" },
-    "macos": { "minOs": "11", "arch": "arm64", "file": "aircontrol-daemon-macos11+-silicon-0.1.71.zip", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.1.71/aircontrol-daemon-macos11+-silicon-0.1.71.zip" },
-    "linux": { "arch": "x64", "file": "aircontrol-daemon-linux-x64-0.1.71.zip", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.1.71/aircontrol-daemon-linux-x64-0.1.71.zip" },
+    "android": { "minOs": "7", "file": "aircontrol-app-android-min7-0.1.72.apk", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.1.72/aircontrol-app-android-min7-0.1.72.apk" },
+    "macos": { "minOs": "11", "arch": "arm64", "file": "aircontrol-daemon-macos11+-silicon-0.1.72.zip", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.1.72/aircontrol-daemon-macos11+-silicon-0.1.72.zip" },
+    "linux": { "arch": "x64", "file": "aircontrol-daemon-linux-x64-0.1.72.zip", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.1.72/aircontrol-daemon-linux-x64-0.1.72.zip" },
     "github": "https://github.com/chatterzhao/aircontrol/releases"
   }
 }
