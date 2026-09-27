@@ -275,6 +275,23 @@ step "查最新版本"
 
 # 两个源都问一遍，谁通用谁——和 App 里那套多源回退同一个道理：
 # 国内连 Gitee 稳，国外/有代理的连 GitHub 稳。
+# ⚠️ **先走"raw 文件"这条零依赖的路** ✗✓（2026-09-26 加，用户问"我们应用还依赖 python 吗"✓）：
+# 下面那个 `fetch_latest` 要 **python3** 解 JSON ✗ —— 而**它从来没被声明为依赖** ✗，
+# 于是没装 python 的用户会看到「两个源都查不到最新版本。**检查网络**」✗ ——
+# **把人引到网络上，而真因是缺个解释器** ✓（这条比"装不上"更难查 ✓）。
+# `latest.json` 本来就是**发布时写好的纯文本** ✓（App 的"检查更新"读的就是它 ✓，不走 API ✓），
+# 所以 `grep` 一行就够 ✓ —— **一个字节的 python 都不需要** ✓。
+#
+# 四个源按顺序试 ✓：raw Gitee → raw GitHub → API(Gitee, 要 python3) → API(GitHub, 要 python3)
+fetch_latest_raw() {
+    local url="$1" field="$2" body
+    body="$(curl -fsSL -m 20 "$url" 2>/dev/null)" || return 1
+    printf '%s' "$body" \
+        | grep -o "\"$field\"[[:space:]]*:[[:space:]]*\"[^\"]*\"" \
+        | head -1 \
+        | sed 's/.*"\([^"]*\)"$/\1/'
+}
+
 fetch_latest() {
     local url="$1" kind="$2" body
     body="$(curl -fsSL -m 20 "$url" 2>/dev/null)" || return 1
@@ -295,13 +312,25 @@ except Exception:
 }
 
 if [ -z "$VERSION" ]; then
-    VERSION="$(fetch_latest "https://gitee.com/api/v5/repos/$GITEE_REPO/releases?per_page=20" gitee || true)"
+    # ── ①② 零依赖：直接读发布时写好的 raw 文件（**不需要 python** ✓）──────────
+    VERSION="$(fetch_latest_raw "https://gitee.com/$GITEE_REPO/raw/main/latest.json" daemon || true)"
     [ -n "$VERSION" ] && say "Gitee 上最新：$VERSION"
+    if [ -z "$VERSION" ]; then
+        VERSION="$(fetch_latest_raw "https://raw.githubusercontent.com/$GITHUB_REPO/main/latest.json" daemon || true)"
+        [ -n "$VERSION" ] && say "GitHub 上最新：$VERSION"
+    fi
+    # ── ③④ 兜底：老路，要 python3（raw 文件读不到时才走到这儿 ✓）──────────
+    if [ -z "$VERSION" ]; then
+        VERSION="$(fetch_latest "https://gitee.com/api/v5/repos/$GITEE_REPO/releases?per_page=20" gitee || true)"
+        [ -n "$VERSION" ] && say "Gitee 上最新：$VERSION"
+    fi
     if [ -z "$VERSION" ]; then
         VERSION="$(fetch_latest "https://api.github.com/repos/$GITHUB_REPO/releases/latest" github || true)"
         [ -n "$VERSION" ] && say "GitHub 上最新：$VERSION"
     fi
-    [ -n "$VERSION" ] || die "两个源都查不到最新版本。检查网络，或用 --version X.Y.Z 指定版本。"
+    [ -n "$VERSION" ] || die "四个源都查不到最新版本（raw 文件 ×2 ＋ releases API ×2）。
+      先看网络；本机**有 python3** 的话 API 那条也能走通。
+      也可以直接指定版本：--version X.Y.Z"
 else
     say "指定版本：$VERSION"
 fi
