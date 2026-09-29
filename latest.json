@@ -1,12 +1,13 @@
 {
-  "client": "0.1.83",
-  "daemon": "0.1.83",
+  "client": "0.2.0",
+  "daemon": "0.2.0",
+  "notes": "连不上的时候，它会告诉你真正的原因；断线之后界面不再自相矛盾；底部那排虚拟键不再切边",
   "releases": {
     "page": "https://gitee.com/zhaoquan/aircontrol/releases",
     "pageGithub": "https://github.com/chatterzhao/aircontrol/releases",
-    "android": { "minOs": "7", "file": "aircontrol-app-android-min7-0.1.83.apk", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.1.83/aircontrol-app-android-min7-0.1.83.apk" },
-    "macos": { "minOs": "11", "arch": "arm64", "file": "AirControl-macos11+-silicon-0.1.83.dmg", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.1.83/AirControl-macos11%20-silicon-0.1.83.dmg" },
-    "linux": { "arch": "x64", "file": "aircontrol-daemon-linux-x64-0.1.83.zip", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.1.83/aircontrol-daemon-linux-x64-0.1.83.zip" },
+    "android": { "minOs": "7", "file": "aircontrol-app-android-min7-0.2.0.apk", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.2.0/aircontrol-app-android-min7-0.2.0.apk" },
+    "macos": { "minOs": "11", "arch": "arm64", "file": "AirControl-macos11+-silicon-0.2.0.dmg", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.2.0/AirControl-macos11%20-silicon-0.2.0.dmg" },
+    "linux": { "arch": "x64", "file": "aircontrol-daemon-linux-x64-0.2.0.zip", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.2.0/aircontrol-daemon-linux-x64-0.2.0.zip" },
     "github": "https://github.com/chatterzhao/aircontrol/releases"
   }
 }
