@@ -1,13 +1,10 @@
 {
-  "client": "0.2.3",
-  "daemon": "0.2.3",
-  "notes": "用「连接码」第一次连的时候，终于连得上了；「正在等你确认」这句话，现在说得出来了；永久码也要确认一次（按你的要求）",
+  "client": "0.2.4",
+  "daemon": "0.2.4",
+  "notes": "「明明已经连上了，界面却还在转圈等你确认」—— 修好了；「连接一会儿就断、老在自动重连」—— 也修好了；iOS 的终端，终于有颜色了",
   "releases": {
     "page": "https://gitee.com/zhaoquan/aircontrol/releases",
     "pageGithub": "https://github.com/chatterzhao/aircontrol/releases",
-    "android": { "minOs": "", "file": "AirControl-Client-Android-v0.2.3.apk", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.2.3/AirControl-Client-Android-v0.2.3.apk" },
-    "linux": { "arch": "", "file": "AirControl-Server-Linux-x64-v0.2.3.zip", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.2.3/AirControl-Server-Linux-x64-v0.2.3.zip" },
-    "windows": { "arch": "x64", "file": "AirControl-Server-Windows-x64-v0.2.3.msi", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.2.3/AirControl-Server-Windows-x64-v0.2.3.msi" },
     "github": "https://github.com/chatterzhao/aircontrol/releases"
   }
 }
