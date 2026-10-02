@@ -156,6 +156,20 @@
 
 ---
 
+## 🍎 先看这里：用 Mac 或 iPhone 的
+
+**苹果系的应用走 App Store** ✓ —— **不在下面那个下载页里** ✗：
+
+| 你要装的 | 去哪儿 | 价格 |
+|---|---|---|
+| **iPhone / iPad 的 Client客户端** | [App Store 搜 AirControl](https://apps.apple.com/cn/search?term=AirControl) | **免费** ✓ |
+| **Mac 的 Server服务端** | [App Store 搜 AirControl](https://apps.apple.com/cn/search?term=AirControl) | 见商店页 |
+
+⚠️ **为什么** ✗：苹果的规矩是应用走 App Store ✓；而 GitHub ／ Gitee 那一页发的
+**只有 Windows ／ Linux ／ Android** ✓ —— 拿 Mac 或 iPhone 的人在那儿**找不到自己的包** ✓。
+
+---
+
 ## 下载（国内建议用 Gitee）
 
 GitHub 的**下载**会跳转到 `release-assets.githubusercontent.com` 和
@@ -180,13 +194,18 @@ GitHub 的**下载**会跳转到 `release-assets.githubusercontent.com` 和
 
 ### 1. Server服务端 —— [详细步骤](docs/install-server.md)
 
-支持 **macOS** / **Windows 10 及以上** / **Linux（x64）**。
+支持 **Windows 10 及以上** / **Linux（x64）** —— 从上面那个下载页拿 ✓。
+
+⚠️ **macOS 版在 App Store** ✓（点这里：[Mac 的 Server服务端](https://apps.apple.com/cn/search?term=AirControl) ✓）——
+**下面那个"前置：Java 17"对它不适用** ✗（商店版自带运行时 ✓）。
 
 前置：**Java 17 或更高版本**（`java -version` 能跑就行）。
 
 ### 2. Client客户端 —— [详细步骤](docs/install-app.md)
 
-Android 手机，下载 APK 直接安装（需要允许"安装未知应用"）。
+Android 手机，从上面那个下载页拿 APK 直接安装（需要允许"安装未知应用"）✓。
+
+⚠️ **iPhone / iPad 版在 App Store** ✓（[点这里](https://apps.apple.com/cn/search?term=AirControl) ✓，**免费** ✓）。
 
 ---
 
