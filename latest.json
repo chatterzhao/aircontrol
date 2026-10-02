@@ -1,12 +1,12 @@
 {
-  "client": "0.2.5",
-  "daemon": "0.2.5",
-  "notes": "Server服务端那个窗口，重新排了一遍；「一开机就冒出好几个Server服务端」—— 修好了；手机上看电脑屏幕：能「铺满」，也能平移了",
+  "client": "0.2.6",
+  "daemon": "0.2.6",
+  "notes": "终端不再「连一次多一份」，屏幕上也不再露出星号",
   "releases": {
     "page": "https://gitee.com/zhaoquan/aircontrol/releases",
     "pageGithub": "https://github.com/chatterzhao/aircontrol/releases",
-    "android": { "minOs": "", "file": "AirControl-Client-Android-v0.2.5.apk", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.2.5/AirControl-Client-Android-v0.2.5.apk" },
-    "linux": { "arch": "", "file": "AirControl-Server-Linux-x64-v0.2.5.zip", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.2.5/AirControl-Server-Linux-x64-v0.2.5.zip" },
+    "macos": { "minOs": "", "arch": "arm64", "file": "AirControl-Server-macOS-Apple-Silicon-v0.2.6.dmg", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.2.6/AirControl-Server-macOS-Apple-Silicon-v0.2.6.dmg" },
+    "linux": { "arch": "", "file": "AirControl-Server-Linux-x64-v0.2.6.zip", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.2.6/AirControl-Server-Linux-x64-v0.2.6.zip" },
     "github": "https://github.com/chatterzhao/aircontrol/releases"
   }
 }
