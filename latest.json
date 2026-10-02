@@ -5,7 +5,7 @@
   "releases": {
     "page": "https://gitee.com/zhaoquan/aircontrol/releases",
     "pageGithub": "https://github.com/chatterzhao/aircontrol/releases",
-    "macos": { "minOs": "", "arch": "arm64", "file": "AirControl-Server-macOS-Apple-Silicon-v0.2.6.dmg", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.2.6/AirControl-Server-macOS-Apple-Silicon-v0.2.6.dmg" },
+    "android": { "minOs": "24", "file": "AirControl-Client-Android-v0.2.6.apk", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.2.6/AirControl-Client-Android-v0.2.6.apk" },
     "linux": { "arch": "", "file": "AirControl-Server-Linux-x64-v0.2.6.zip", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.2.6/AirControl-Server-Linux-x64-v0.2.6.zip" },
     "github": "https://github.com/chatterzhao/aircontrol/releases"
   }
