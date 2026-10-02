@@ -156,17 +156,27 @@
 
 ---
 
-## 🍎 先看这里：用 Mac 或 iPhone 的
+## 📥 装哪个？去哪儿拿？
 
-**苹果系的应用走 App Store** ✓ —— **不在下面那个下载页里** ✗：
+**先看你手上是什么设备** —— 两个应用**装的东西不一样**：
 
-| 你要装的 | 去哪儿 | 价格 |
+| 你的设备 | 装哪个 | 干什么用 |
 |---|---|---|
-| **iPhone / iPad 的 Client客户端** | [App Store 搜 AirControl](https://apps.apple.com/cn/search?term=AirControl) | **免费** ✓ |
-| **Mac 的 Server服务端** | [App Store 搜 AirControl](https://apps.apple.com/cn/search?term=AirControl) | 见商店页 |
+| **电脑** | **Server服务端** | 那台**被看屏幕、被敲命令**的机器 |
+| **手机 / 平板** | **Client客户端** | 用来看那块屏幕、敲那个终端 |
 
-⚠️ **为什么** ✗：苹果的规矩是应用走 App Store ✓；而 GitHub ／ Gitee 那一页发的
-**只有 Windows ／ Linux ／ Android** ✓ —— 拿 Mac 或 iPhone 的人在那儿**找不到自己的包** ✓。
+然后按系统分：
+
+| 系统 | 去哪儿拿 |
+|---|---|
+| **macOS** | [App Store 搜 AirControl](https://apps.apple.com/cn/search?term=AirControl) |
+| **iOS / iPadOS** | [App Store 搜 AirControl](https://apps.apple.com/cn/search?term=AirControl) —— **免费** |
+| **Windows** | [Gitee 发布页](https://gitee.com/zhaoquan/aircontrol/releases) ／ [GitHub 发布页](https://github.com/chatterzhao/aircontrol/releases) |
+| **Linux** | [Gitee 发布页](https://gitee.com/zhaoquan/aircontrol/releases) ／ [GitHub 发布页](https://github.com/chatterzhao/aircontrol/releases) |
+| **Android** | [Gitee 发布页](https://gitee.com/zhaoquan/aircontrol/releases) ／ [GitHub 发布页](https://github.com/chatterzhao/aircontrol/releases) |
+
+⚠️ **苹果系（macOS ／ iOS）不在下面那个下载页里** —— 苹果的规矩是应用走 App Store。
+拿 Mac 或 iPhone 的人在那一页**找不到自己的包**，这是**对的**，不是没发布。
 
 ---
 
