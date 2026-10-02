@@ -1,6 +1,6 @@
-# 在 Linux 服务器上部署执行端
+# 在 Linux 服务器上部署Server服务端
 
-执行端是 **Kotlin/JVM** 程序，所以 **macOS / Linux / Windows 都能跑同一份产物** ——
+Server服务端是 **Kotlin/JVM** 程序，所以 **macOS / Linux / Windows 都能跑同一份产物** ——
 不是三套代码，是同一个 JVM 程序。本文说 Linux（尤其是**没有图形界面的服务器**）。
 
 > ⚠️ 本文**不记录任何真实地址、密钥或凭据**。
@@ -177,6 +177,6 @@ sudo dnf install tmux          # RHEL/CentOS/OpenCloudOS
 **已实测**（Linux 6.6 x86_64，无 Java、无 tmux）：
 
 - ✅ 便携 JRE 解压后能跑
-- ✅ 执行端启动、打印两种连接码
+- ✅ Server服务端启动、打印两种连接码
 - ⏳ **待复核**：手机连上该服务器、批准文件生效、终端回显
   （这几步需要在同一网络里同时操作手机和服务器）

@@ -1,4 +1,4 @@
-# AirControl 执行端安装说明书
+# AirControl Server服务端安装说明书
 
 > **这份文档是给 AI 助手读的，不是给人读的。**
 >
@@ -9,7 +9,7 @@
 
 ## 你要做什么（给 AI）
 
-在这台电脑上安装 **AirControl 执行端**（一个后台程序）。
+在这台电脑上安装 **AirControl Server服务端**（一个后台程序）。
 
 装好之后，用户就能用手机连上这台电脑，指挥电脑上的 AI 干活。
 **你只需要把它装好并启动，然后把配对信息告诉用户。不要改用户的任何已有配置。**
@@ -20,7 +20,7 @@
 
 在动手之前，跟用户确认：
 
-1. **确定要在【这台】电脑上装吗？** —— 执行端要长期开着，最好是有 AI 在那跑的那台
+1. **确定要在【这台】电脑上装吗？** —— Server服务端要长期开着，最好是有 AI 在那跑的那台
 2. **这台电脑有没有 Java 17+？** —— 用 `java -version` 看一眼即可，**但不用为它停下来**：
    - **Linux**：不用管。第 1 步的 `install.sh` 会**自己下载一份便携 JRE** 放到安装目录里，
      **完全不动系统**。你不需要装 JDK，也不要 `apt install`。
@@ -32,7 +32,7 @@
 
 ---
 
-## 第 1 步：装 AirControl 执行端（用官方脚本，别自己拼命令）
+## 第 1 步：装 AirControl Server服务端（用官方脚本，别自己拼命令）
 
 ```bash
 curl -fsSL https://gitee.com/zhaoquan/aircontrol/raw/main/install.sh | bash
@@ -64,7 +64,7 @@ curl -fsSL https://gitee.com/zhaoquan/aircontrol/raw/main/install.sh | bash
 > | 系统 | 架构 | 文件 |
 > |---|---|---|
 > | macOS | arm64 | `aircontrol-daemon-macos-min11-arm64-<版本>.zip` |
-> | Linux | x86_64 | `aircontrol-daemon-linux-x64-<版本>.zip` |
+> | Linux | x86_64 | `AirControl-Server-Linux-x64-v<版本>.zip` |
 > | **Windows** | 任意 | **下 Linux 包**——同一个 zip 里同时有 `bin/daemon` 和 `bin/daemon.bat` |
 > | macOS | x86_64（Intel） | ⚠️ **目前没有 Intel 包**，停下来告诉用户 |
 >
@@ -92,7 +92,7 @@ curl -fsSL https://gitee.com/zhaoquan/aircontrol/raw/main/install.sh | bash
 
 | 工具 | 干什么 | 必需？ |
 |---|---|---|
-| **Java 17+** | 执行端靠它运行 | **必需**（第 0 步已确认） |
+| **Java 17+** | Server服务端靠它运行 | **必需**（第 0 步已确认） |
 | **tmux** | 会话管理——多开、断了能接回来 | **强烈建议**（没有会降级） |
 | **Tailscale** | 手机和电脑不在同一网络时也能连 | 可选 |
 | **AI CLI** | **真正干活的那个** | **必需**（否则连上了也没用） |
@@ -117,7 +117,7 @@ dnf install tmux
 - **官方下载页**：<https://tailscale.com/download>
 - 装完还要 `tailscale up` 让用户**自己登录**（这一步必须他本人做，别代劳）
 - 登录后 `tailscale ip -4` 拿到 `100.x.x.x`，**这就是手机该填的地址**
-- 手机端也要装 Tailscale 并登同一个账号
+- Client客户端也要装 Tailscale 并登同一个账号
 
 **如果用户只是想在同一 Wi-Fi 下用，跳过这一步。**
 
@@ -193,13 +193,13 @@ daemon\bin\daemon.bat --ws-port 8080 --session aircontrol
 
 ---
 
-## 第 8 步：装手机端（可选）
+## 第 8 步：装Client客户端（可选）
 
 如果用户还要装手机 App：
 
 ```bash
 # 从同一个 Release 下载
-aircontrol-app-android-min7-<版本>.apk
+AirControl-Client-Android-v<版本>.apk
 ```
 
 把这**一个文件**交给用户，让他自己传到手机上安装（需要允许"安装未知应用"）。
@@ -225,7 +225,7 @@ aircontrol-app-android-min7-<版本>.apk
 
 ## 装完之后能干什么
 
-执行端跑起来后，用户在手机上可以：
+Server服务端跑起来后，用户在手机上可以：
 
 - 看这台电脑的**终端**（真的终端，`vim`/`htop`/`claude` 都能用）
 - 看这台电脑的**屏幕**
@@ -245,7 +245,7 @@ aircontrol-app-android-min7-<版本>.apk
 | 起不来，提示 Java | `java -version`，要 17+ |
 | 起来了但手机连不上 | 两端是否同一网络；是否用了 Tailscale；防火墙是否放行 8080 |
 | Windows 上第一次跑，桌面上弹了防火墙询问 | 点「允许访问」。**不点的话不只是连不上**：那个弹窗占着前台，手机上的点击/打字会落到它身上，看起来像"操作没反应" |
-| 连上就断 | 看执行端窗口打印的错误；确认中间没有代理 |
+| 连上就断 | 看Server服务端窗口打印的错误；确认中间没有代理 |
 | 屏幕功能不可用 | macOS 要授权「屏幕录制」；Linux 服务器没有图形界面 |
 
 **卡住就把原始报错贴给用户，不要自己猜着改配置。**
