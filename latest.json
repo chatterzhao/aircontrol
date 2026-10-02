@@ -1,13 +1,10 @@
 {
-  "client": "0.2.4",
-  "daemon": "0.2.4",
-  "notes": "「明明已经连上了，界面却还在转圈等你确认」—— 修好了；「连接一会儿就断、老在自动重连」—— 也修好了；iOS 的终端，终于有颜色了",
+  "client": "0.2.5",
+  "daemon": "0.2.5",
+  "notes": "Server服务端那个窗口，重新排了一遍；「一开机就冒出好几个Server服务端」—— 修好了；手机上看电脑屏幕：能「铺满」，也能平移了",
   "releases": {
     "page": "https://gitee.com/zhaoquan/aircontrol/releases",
     "pageGithub": "https://github.com/chatterzhao/aircontrol/releases",
-    "android": { "minOs": "24", "file": "AirControl-Client-Android-v0.2.4.apk", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.2.4/AirControl-Client-Android-v0.2.4.apk" },
-    "macos": { "minOs": "", "arch": "arm64", "file": "AirControl-Server-macOS-Apple-Silicon-v0.2.4.dmg", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.2.4/AirControl-Server-macOS-Apple-Silicon-v0.2.4.dmg" },
-    "linux": { "arch": "", "file": "AirControl-Server-Linux-x64-v0.2.4.zip", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.2.4/AirControl-Server-Linux-x64-v0.2.4.zip" },
     "github": "https://github.com/chatterzhao/aircontrol/releases"
   }
 }

@@ -1,6 +1,6 @@
-# 安装执行端
+# 安装Server服务端
 
-执行端是一个常驻后台的程序，装在你**要指挥的那台电脑**上
+Server服务端是一个常驻后台的程序，装在你**要指挥的那台电脑**上
 （本地机器、家里/公司的机器，或者租的云服务器都行）。
 
 ---
@@ -11,20 +11,20 @@
 |---|---|
 | **Windows** | **不需要装 Java** —— 安装包自带运行时（见下面「下载」） |
 | **macOS / Linux**：**Java 17 或更高** | 终端里跑 `java -version` 能出版本号就行 |
-| **tmux**（macOS / Linux；可选，强烈建议） | 有它才能在断线后保住会话。**没有的话执行端会当场问你要不要帮你装**（答 y 就行） |
+| **tmux**（macOS / Linux；可选，强烈建议） | 有它才能在断线后保住会话。**没有的话Server服务端会当场问你要不要帮你装**（答 y 就行） |
 
 ```bash
 # 检查（macOS / Linux）
 java -version      # 要 17+
 tmux -V            # 可选
 
-# 想自己装（执行端也会问，答 y 它替你装）
+# 想自己装（Server服务端也会问，答 y 它替你装）
 brew install tmux          # macOS
 sudo apt install tmux      # Debian/Ubuntu
 sudo dnf install tmux      # Fedora/RHEL
 ```
 
-> **装 tmux 这件事不用你操心**：执行端启动时如果发现没有 tmux，会检测出你机器上的
+> **装 tmux 这件事不用你操心**：Server服务端启动时如果发现没有 tmux，会检测出你机器上的
 > 包管理器并问一句"要我现在帮你装吗"。答 `y` 它就跑（macOS 走 Homebrew，
 > 不需要管理员密码；Linux 上要 `sudo`，会问密码）。答 `n` 或者干脆没人应答
 > （比如后台/开机自启跑的），它就把命令打出来让你自己决定，**绝不自作主张**。
@@ -41,10 +41,10 @@ sudo dnf install tmux      # Fedora/RHEL
 
 | 系统 | 下载 |
 |---|---|
-| **Windows 10 / 11（x64）** | **`AirControl-<版本>-x64.msi`** ← **双击就装** |
+| **Windows 10 / 11（x64）** | **`AirControl-Server-Windows-x64-v<版本>.msi`** ← **双击就装** |
 | macOS（Apple 芯片） | `aircontrol-daemon-macos-min11-arm64-<版本>.zip` |
 | macOS（Intel） | `aircontrol-daemon-macos-min11-x64-<版本>.zip` |
-| Linux (x64) | `aircontrol-daemon-linux-x64-<版本>.zip` |
+| Linux (x64) | `AirControl-Server-Linux-x64-v<版本>.zip` |
 
 > **Windows 上就是这一个文件**：`.msi` 里**自带 Java 运行时**，所以你不用先装 JDK，
 > 也不用解压、不用开命令行 —— 双击、下一步、装完在开始菜单里找「AirControl」。
@@ -65,7 +65,7 @@ sudo dnf install tmux      # Fedora/RHEL
 shasum -a 256 -c SHA-256SUMS
 
 # Windows (PowerShell)
-Get-FileHash .\AirControl-<版本>-x64.msi -Algorithm SHA256
+Get-FileHash .\AirControl-Server-Windows-x64-v<版本>.msi -Algorithm SHA256
 # 把结果跟 SHA-256SUMS 里那一行对一下
 ```
 
@@ -75,7 +75,7 @@ Get-FileHash .\AirControl-<版本>-x64.msi -Algorithm SHA256
 
 **Windows（推荐，双击即可）**
 
-1. 双击 `AirControl-<版本>-x64.msi` → 下一步到底（**不需要管理员**）；
+1. 双击 `AirControl-Server-Windows-x64-v<版本>.msi` → 下一步到底（**不需要管理员**）；
 2. 从**开始菜单**打开「AirControl」；
 3. 屏幕上会出现一个**管理窗口**：里面有连接码、可用地址、以及"服务有没有在跑"。
 
@@ -125,7 +125,7 @@ cd aircontrol/daemon        # ⚠️ 包里有层 daemon/ 目录，别少这一�
 - ✅ 换网络后**地址不变**
 - ✅ 链路有 **WireGuard 加密**
 
-装好 Tailscale 后，执行端打印的连接串里**已经是 Tailscale 地址**，直接用。
+装好 Tailscale 后，Server服务端打印的连接串里**已经是 Tailscale 地址**，直接用。
 
 > Android 上记得把 Tailscale 的电池优化关掉：设置 → 应用 → Tailscale → 电池 → **不限制**。
 > 否则系统会在后台把它杀掉。
@@ -150,7 +150,7 @@ hostname -I                   # Linux
 
 ## 更新
 
-**执行端不做自动更新**（它有系统权限，自动替换二进制风险太高）。手动更新：
+**Server服务端不做自动更新**（它有系统权限，自动替换二进制风险太高）。手动更新：
 
 **Windows**：下载新的 `.msi` 双击装一遍就行 —— 它会覆盖旧版本（不用先卸载），
 装在同一个位置、开始菜单项也还是那一个。
@@ -158,7 +158,7 @@ hostname -I                   # Linux
 **macOS / Linux**：
 
 ```bash
-# 1. 停掉正在跑的执行端（Ctrl-C）
+# 1. 停掉正在跑的Server服务端（Ctrl-C）
 # 2. 下载新版本，解压覆盖
 # 3. 用同样的参数重新启动
 ```
@@ -166,7 +166,7 @@ hostname -I                   # Linux
 会话不会丢——它们跑在 tmux 里，重新 attach 就回来了。
 （Windows 上更新会丢掉正在跑的东西，先把手头的活儿存好。）
 
-App 里会提示执行端是否有新版本。
+App 里会提示Server服务端是否有新版本。
 
 ---
 
@@ -179,4 +179,4 @@ App 里会提示执行端是否有新版本。
 | 安装时提示"系统管理员已阻止这个应用" | 那是 SmartScreen 对**未签名**安装包的提示（我们还没买代码签名证书）。点「更多信息」→「仍要运行」即可 |
 | 手机连上了但屏幕是黑的 | macOS 需要开**屏幕录制权限**：系统设置 → 隐私与安全性 → 屏幕录制 |
 | 断线后会话丢了 | 大概率是没装 tmux，走了降级模式 |
-| 端口被占用 | 换一个 `--ws-port`，手机端端口跟着改 |
+| 端口被占用 | 换一个 `--ws-port`，Client客户端端口跟着改 |
