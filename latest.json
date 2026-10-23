@@ -8,7 +8,8 @@
     "android": {
       "minOs": "24",
       "file": "AirControl-Client-Android-v0.2.6.apk",
-      "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.2.6/AirControl-Client-Android-v0.2.6.apk"
+      "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.2.6/AirControl-Client-Android-v0.2.6.apk",
+      "sha256": "fbc8fa0706f066bd537a7dc2ed5e4fd167cc729e8c1d0f2abfcb1bcad87853bd"
     },
     "linux": {
       "arch": "",
