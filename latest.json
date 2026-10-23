@@ -1,15 +1,15 @@
 {
-  "client": "0.2.6",
+  "client": "0.2.7",
   "daemon": "0.2.6",
-  "notes": "终端重连不再越连越多；屏幕视图不再露出星号；Mac App Store 版能正常安装启动",
+  "notes": "Android 客户端 0.2.7：应用内下载/系统安装器、SHA-256 与签名校验、未知应用引导、失败重试、重连提示修复；Server服务端仍为 0.2.6，无需更新",
   "releases": {
-    "page": "https://gitee.com/zhaoquan/aircontrol/releases",
-    "pageGithub": "https://github.com/chatterzhao/aircontrol/releases",
+    "page": "https://gitee.com/zhaoquan/aircontrol/releases/tag/v0.2.7-android",
+    "pageGithub": "https://github.com/chatterzhao/aircontrol/releases/tag/v0.2.7-android",
     "android": {
       "minOs": "24",
-      "file": "AirControl-Client-Android-v0.2.6.apk",
-      "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.2.6/AirControl-Client-Android-v0.2.6.apk",
-      "sha256": "fbc8fa0706f066bd537a7dc2ed5e4fd167cc729e8c1d0f2abfcb1bcad87853bd"
+      "file": "AirControl-Client-Android-v0.2.7.apk",
+      "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.2.7-android/AirControl-Client-Android-v0.2.7.apk",
+      "sha256": "f96dd16812485e8b0305578f8bcc530a65b568dd4c10b589ae2099bdfb706462"
     },
     "linux": {
       "arch": "",
