@@ -1,7 +1,7 @@
 {
   "client": "0.2.7",
   "daemon": "0.2.6",
-  "notes": "Android 客户端 0.2.7：应用内下载/系统安装器、SHA-256 与签名校验、未知应用引导、失败重试、重连提示修复；Server服务端仍为 0.2.6，无需更新",
+  "notes": "Android 客户端 0.2.7：应用内下载/系统安装器、SHA-256 与签名校验、未知应用引导、失败重试、重连提示修复；Server服务端仍为 0.2.6，无需更新。首次从 0.2.6 升级需手动安装一次，之后才走应用内更新",
   "releases": {
     "page": "https://gitee.com/zhaoquan/aircontrol/releases/tag/v0.2.7-android",
     "pageGithub": "https://github.com/chatterzhao/aircontrol/releases/tag/v0.2.7-android",
