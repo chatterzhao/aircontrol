@@ -6,7 +6,7 @@
     "page": "https://gitee.com/zhaoquan/aircontrol/releases",
     "pageGithub": "https://github.com/chatterzhao/aircontrol/releases",
     "android": {
-      "minOs": "",
+      "minOs": "24",
       "file": "AirControl-Client-Android-v0.2.6.apk",
       "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.2.6/AirControl-Client-Android-v0.2.6.apk"
     },
