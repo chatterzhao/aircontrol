@@ -1,12 +1,20 @@
 {
   "client": "0.2.6",
   "daemon": "0.2.6",
-  "notes": "终端不再「连一次多一份」，屏幕上也不再露出星号",
+  "notes": "终端重连不再越连越多；屏幕视图不再露出星号；Mac App Store 版能正常安装启动",
   "releases": {
     "page": "https://gitee.com/zhaoquan/aircontrol/releases",
     "pageGithub": "https://github.com/chatterzhao/aircontrol/releases",
-    "android": { "minOs": "24", "file": "AirControl-Client-Android-v0.2.6.apk", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.2.6/AirControl-Client-Android-v0.2.6.apk" },
-    "linux": { "arch": "", "file": "AirControl-Server-Linux-x64-v0.2.6.zip", "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.2.6/AirControl-Server-Linux-x64-v0.2.6.zip" },
+    "android": {
+      "minOs": "",
+      "file": "AirControl-Client-Android-v0.2.6.apk",
+      "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.2.6/AirControl-Client-Android-v0.2.6.apk"
+    },
+    "linux": {
+      "arch": "",
+      "file": "AirControl-Server-Linux-x64-v0.2.6.zip",
+      "url": "https://gitee.com/zhaoquan/aircontrol/releases/download/v0.2.6/AirControl-Server-Linux-x64-v0.2.6.zip"
+    },
     "github": "https://github.com/chatterzhao/aircontrol/releases"
   }
 }

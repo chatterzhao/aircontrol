@@ -1,0 +1,6 @@
+{
+  "note": "三方件的官方原名 ＋ sha256 ✓ —— 校验用：sha256sum <文件>（macOS: shasum -a 256）"
+  ,"assets": [
+    {"name": "tmux-3.7c-linux-x86_64.tar.gz", "platform": "linux-x64", "version": "3.7c", "bytes": 985620, "sha256": "cc56bd1cc873eb6089c615f0496b072385bda8a6d944069f38564a5d49c128aa", "upstream": "https://github.com/tmux/tmux/releases", "license": "ISC"},    {"name": "tmux-3.7c-macos-arm64.tar.gz", "platform": "macos-arm64", "version": "3.7c", "bytes": 647750, "sha256": "0a763dd0380aa980d239509654da1bc7455843706a3c050f6709c8cd2e13d12d", "upstream": "https://github.com/tmux/tmux/releases", "license": "ISC"},    {"name": "tmux-3.7c-macos-x86_64.tar.gz", "platform": "macos-x64", "version": "3.7c", "bytes": 676533, "sha256": "1c21f9ade964e4a539be05ffe3a4e95854ab76a0a9c4c05d0ffbe7fc6c4d783f", "upstream": "https://github.com/tmux/tmux/releases", "license": "ISC"}
+  ]
+}
