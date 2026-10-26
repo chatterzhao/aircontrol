@@ -10,8 +10,9 @@ Server服务端是一个常驻后台的程序，装在你**要指挥的那台电
 | 要求 | 说明 |
 |---|---|
 | **Windows** | **不需要装 Java** —— 安装包自带运行时（见下面「下载」） |
-| **macOS / Linux**：**Java 17 或更高** | 终端里跑 `java -version` 能出版本号就行 |
-| **tmux**（macOS / Linux；可选，强烈建议） | 有它才能在断线后保住会话。**没有的话Server服务端会当场问你要不要帮你装**（答 y 就行） |
+| **macOS** | **只在 Mac App Store 提供**（自带运行时，不需要装 Java，也不用命令行） |
+| **Linux**：**Java 17 或更高** | 终端里跑 `java -version` 能出版本号就行 |
+| **tmux**（Linux；可选，强烈建议） | 有它才能在断线后保住会话。**没有的话Server服务端会当场问你要不要帮你装**（答 y 就行） |
 
 ```bash
 # 检查（macOS / Linux）
@@ -42,9 +43,12 @@ sudo dnf install tmux      # Fedora/RHEL
 | 系统 | 下载 |
 |---|---|
 | **Windows 10 / 11（x64）** | **`AirControl-Server-Windows-x64-v<版本>.msi`** ← **双击就装** |
-| macOS（Apple 芯片） | `aircontrol-daemon-macos-min11-arm64-<版本>.zip` |
-| macOS（Intel） | `aircontrol-daemon-macos-min11-x64-<版本>.zip` |
-| Linux (x64) | `AirControl-Server-Linux-x64-v<版本>.zip` |
+| **Linux (x64)** | `AirControl-Server-Linux-x64-v<版本>.zip` |
+| **macOS** | ⚠️ **不在这一页** —— 只在 **Mac App Store**（搜「AirControl」） |
+
+> ⚠️ **苹果系只走 App Store**：macOS / iOS 的安装包**不放进 GitHub / Gitee 的 Release**。
+> 在这一页找不到 `.dmg` / `.zip` 是**故意的、正确的**，不是没发布。开发者本机要跑，
+> 用源码仓里的打包脚本；普通用户请走商店。
 
 > **Windows 上就是这一个文件**：`.msi` 里**自带 Java 运行时**，所以你不用先装 JDK，
 > 也不用解压、不用开命令行 —— 双击、下一步、装完在开始菜单里找「AirControl」。
@@ -54,14 +58,10 @@ sudo dnf install tmux      # Fedora/RHEL
 > **Windows 上不再提供 zip 包**：以前那个 zip 要你自己装 Java 17 才能跑，
 > 现在 msi 把运行时一起带上了，两样东西发一种就够了。
 
-> 名字里的 **`min11` 是能运行的最低 macOS 版本**（11 = Big Sur）。写进文件名
-> 是因为以前不写，用户在旧系统上装完跑不起来、只以为"包坏了"——
-> 对着文件名就应该能判断自己能不能装。
-
 每个 Release 都带一个 `SHA-256SUMS` 文件。**建议校验一下**你下到的东西没被掉包：
 
 ```bash
-# macOS / Linux
+# Linux
 shasum -a 256 -c SHA-256SUMS
 
 # Windows (PowerShell)
@@ -91,10 +91,10 @@ Get-FileHash .\AirControl-Server-Windows-x64-v<版本>.msi -Algorithm SHA256
 > 第一次启动时 Windows 可能弹一次"允许访问"的询问 —— **点允许**。
 > 那个弹窗会占着最前面，手机上的操作会落到它身上（看起来像没反应）。
 
-**macOS / Linux（解压即用）**
+**Linux（解压即用）**
 
 ```bash
-unzip aircontrol-daemon-<你的系统>-<版本>.zip -d aircontrol
+unzip AirControl-Server-Linux-x64-<版本>.zip -d aircontrol
 cd aircontrol/daemon        # ⚠️ 包里有层 daemon/ 目录，别少这一层
 ./bin/daemon --ws-port 8080 --pin 1234 --session aircontrol
 ```
@@ -155,13 +155,15 @@ hostname -I                   # Linux
 **Windows**：下载新的 `.msi` 双击装一遍就行 —— 它会覆盖旧版本（不用先卸载），
 装在同一个位置、开始菜单项也还是那一个。
 
-**macOS / Linux**：
+**Linux**：
 
 ```bash
 # 1. 停掉正在跑的Server服务端（Ctrl-C）
 # 2. 下载新版本，解压覆盖
 # 3. 用同样的参数重新启动
 ```
+
+**macOS**：在 **Mac App Store** 里更新（和别的商店应用一样），不进这一页。
 
 会话不会丢——它们跑在 tmux 里，重新 attach 就回来了。
 （Windows 上更新会丢掉正在跑的东西，先把手头的活儿存好。）
@@ -174,7 +176,7 @@ App 里会提示Server服务端是否有新版本。
 
 | 现象 | 原因 / 处理 |
 |---|---|
-| `Unable to locate a Java Runtime` | macOS / Linux 上没装 Java 17+，或没配好 `JAVA_HOME`（**Windows 的 msi 不受影响**：自带运行时） |
+| `Unable to locate a Java Runtime` | Linux 上没装 Java 17+，或没配好 `JAVA_HOME`（**Windows 的 msi / macOS 的商店版都自带运行时**，不受影响） |
 | 手机上连不上 | 先确认两端网络互通：Tailscale 里对方是不是在线；或局域网里能不能 ping 通。Windows 上还要确认防火墙放行了端口 |
 | 安装时提示"系统管理员已阻止这个应用" | 那是 SmartScreen 对**未签名**安装包的提示（我们还没买代码签名证书）。点「更多信息」→「仍要运行」即可 |
 | 手机连上了但屏幕是黑的 | macOS 需要开**屏幕录制权限**：系统设置 → 隐私与安全性 → 屏幕录制 |

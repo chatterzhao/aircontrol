@@ -24,15 +24,19 @@
 2. **这台电脑有没有 Java 17+？** —— 用 `java -version` 看一眼即可，**但不用为它停下来**：
    - **Linux**：不用管。第 1 步的 `install.sh` 会**自己下载一份便携 JRE** 放到安装目录里，
      **完全不动系统**。你不需要装 JDK，也不要 `apt install`。
-   - **macOS**：如果没装，`install.sh` 会告诉你 `brew install openjdk@17`。
-     注意 macOS 上 `/usr/bin/java` 是个 **stub**——它存在不代表装了 JDK，
-     跑起来只会说 "Unable to locate a Java Runtime."
+   - **macOS**：⚠️ **停** —— macOS 版**只从 Mac App Store 安装**（苹果的规矩，
+     公开的 Release 里**没有** macOS 包）。让用户自己去 App Store 搜「AirControl」，
+     **不要**跑 `install.sh`，也**不要**去找 `.dmg` / `.zip`。
    - **已经装了但版本低于 17** → 让用户处理，别自己升级他的 Java。
 3. **用户是想让手机连局域网，还是走 Tailscale？** —— 影响你用哪个地址。**不确定就先按局域网来**
 
 ---
 
 ## 第 1 步：装 AirControl Server服务端（用官方脚本，别自己拼命令）
+
+> ⚠️ **这个脚本只给 Linux**。如果你在 macOS 上，**停在这里**：让用户去
+> Mac App Store 搜「AirControl」。苹果系不通过 GitHub / Gitee 的 Release 分发，
+> 脚本也会直接拒绝 macOS。
 
 ```bash
 curl -fsSL https://gitee.com/zhaoquan/aircontrol/raw/main/install.sh | bash
@@ -63,23 +67,20 @@ curl -fsSL https://gitee.com/zhaoquan/aircontrol/raw/main/install.sh | bash
 >
 > | 系统 | 架构 | 文件 |
 > |---|---|---|
-> | macOS | arm64 | `aircontrol-daemon-macos-min11-arm64-<版本>.zip` |
 > | Linux | x86_64 | `AirControl-Server-Linux-x64-v<版本>.zip` |
 > | **Windows** | 任意 | **下 Linux 包**——同一个 zip 里同时有 `bin/daemon` 和 `bin/daemon.bat` |
-> | macOS | x86_64（Intel） | ⚠️ **目前没有 Intel 包**，停下来告诉用户 |
+> | **macOS** | 任意 | ⚠️ **没有包，也不会有** —— 让用户走 Mac App Store |
 >
 > 下载后**必须校验**（这一步不能跳）：
 >
 > ```bash
 > curl -fL -o SHA-256SUMS "<release>/SHA-256SUMS"
-> shasum -a 256 -c SHA-256SUMS --ignore-missing   # macOS
 > sha256sum  -c SHA-256SUMS --ignore-missing      # Linux
 > ```
 >
 > 校验不过就删掉重下，**绝不要继续安装**。
 >
 > 解压后放到用户级目录（**不要 sudo、不要系统目录**）：
-> macOS `~/Applications/aircontrol-daemon/`，
 > Linux `~/.local/opt/aircontrol-daemon/`，
 > Windows `%LOCALAPPDATA%\aircontrol-daemon\`。
 >
@@ -159,7 +160,7 @@ dnf install tmux
 `install.sh` 跑完会告诉你它装到哪了、怎么起。手动装的话是：
 
 ```bash
-# macOS / Linux
+# Linux（macOS 走 App Store，没有这条命令行）
 ./daemon/bin/daemon --ws-port 8080 --session aircontrol
 # Windows
 daemon\bin\daemon.bat --ws-port 8080 --session aircontrol

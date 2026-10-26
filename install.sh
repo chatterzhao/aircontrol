@@ -112,7 +112,15 @@ fi
 step "检查环境"
 
 case "$(uname -s)" in
-    Darwin) OS=macos ;;
+    # ⚠️⚠️ **macOS 一律引导到 Mac App Store，本脚本不给它装** ✗✓（2026-10-25 用户定 ✓）：
+    #   用户的规矩：「**苹果系只走商店路线**；**不允许在 GitHub / Gitee 的 Release 里出现苹果系**」✓。
+    #   这不是技术限制，是**分发渠道**的约束 ⇒ 所以这儿【主动挡住】✗，
+    #   而不是"下载失败再说找不到包" ✓（后者会让人以为是我们漏发了 ✓）。
+    #   开发者本机要跑，用仓库里的 `scripts/pack-daemon-jpackage.sh` ✓，不走这条公开脚本。
+    Darwin)
+        die "macOS 版只在 Mac App Store 提供，本站不提供 .dmg / .zip 下载。
+    Mac App Store 搜「AirControl」，或打开：https://apps.apple.com/cn/search?term=AirControl
+    （本脚本只负责 Linux。macOS 上不需要、也不应该用命令行装 Server服务端。）" ;;
     Linux)  OS=linux ;;
     MINGW*|MSYS*|CYGWIN*)
         die "Windows 请用 PowerShell 手动安装：下载 zip 解压后跑 bin\\daemon.bat
@@ -126,8 +134,9 @@ case "$(uname -m)" in
     *) die "不支持的架构：$(uname -m)" ;;
 esac
 
-# macOS Intel 的产物在 roadmap 里是 x64，但只有 Apple 芯片的机器编得出 arm64——
-# 两个都要有，缺了就说清楚，别让用户下到一个装不上的包。
+# ⚠️ 走到这儿的只可能是 **Linux**（Darwin 上面已经挡掉了 ✓）——
+#   Release 里的 Linux 产物有 x64 / arm64 两种，缺了就说清楚，
+#   别让用户下到一个装不上的包。
 SLUG="$OS-$ARCH"
 
 # ⚠️ 不能只看 `command -v java`：macOS 上 /usr/bin/java 是个 **stub**，
@@ -361,7 +370,7 @@ for src in "Gitee:$GITEE_BASE" "GitHub:$GITHUB_BASE"; do
     fi
     echo "失败"
 done
-[ "$ok" = 1 ] || die "两个源都下载失败。可能是 $SLUG 这个平台还没有产物（当前只发 macOS/Linux 的 x64 与 arm64）。"
+[ "$ok" = 1 ] || die "两个源都下载失败。可能是 $SLUG 这个平台还没有产物（当前只发 Linux 的 x64 与 arm64；macOS 走 App Store）。"
 
 # ── 4. 校验 ───────────────────────────────────────────────────────────────────
 
